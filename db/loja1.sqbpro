@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/ciencia.dados1/loja1.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="160"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title=".Navegáveis" custom_title="0" dock_id="1" table="0,11:Navegáveis"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000012400ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- DDL (Data Definition Language) - Define e modifica a estrutura do banco de dados.
+
+-- CRIANDO TABELA PRODUTOS
+CREATE TABLE PRODUTOS(
+	IDPRODUTO INTEGER PRIMARY KEY AUTOINCREMENT, -- A coluna IDPRODUTO é chave primária e auto-incrementada
+	NOMEPROD VARCHAR(120) UNIQUE NOT NULL, -- Nome do produto, deve ser único e não pode ser nulo
+	DESCPROD VARCHAR(120), -- Descrição do produto
+	CODPROD VARCHAR(10), -- Código do produto
+	VLRPROD FLOAT NOT NULL, -- Valor do produto
+	QTDPROD INT -- Quantidade do produto
+);
+
+-- Exemplo de DDL: como excluir uma tabela
+/*
+ # Caso queira deletar a tabela e adicionar a mesma novamente
+ # Use o comando
+    DROP TABLE PRODUTOS;
+ # depois adiciona a tabela novamente
+*/
+
+--CRIANDO TABELA VENDEDORES
+CREATE TABLE VENDEDORES (
+    IDVENDEDOR INTEGER PRIMARY KEY AUTOINCREMENT, -- Chave primária auto-incrementada para ID do vendedor
+    NOMEVEND VARCHAR(100) UNIQUE -- Nome do vendedor deve ser único
+);
+
+--CRIANDO TABELA VENDAS
+CREATE TABLE VENDAS(
+	IDVENDAS INTEGER PRIMARY KEY AUTOINCREMENT, -- ID da venda com chave primária auto-incrementada
+	IDPRODUTO INTEGER, -- ID do produto vendido
+	IDVENDEDOR INTEGER, -- ID do vendedor
+	VALOR FLOAT NOT NULL, -- Valor total da venda
+	QTDVENDIDA INTEGER, -- Quantidade vendida
+	FOREIGN KEY(IDPRODUTO) REFERENCES produtos(IDPRODUTO), -- Chave estrangeira referenciando a tabela PRODUTOS
+	FOREIGN KEY(IDVENDEDOR) REFERENCES VENDEDORES(IDVENDEDOR) -- Chave estrangeira referenciando a tabela VENDEDORES
+);
+
+---------------------------------------------------------------------------------------------------
+
+--+--------------------------------------------------+
+--|             ALTERANDO TABELA                     |
+--+--------------------------------------------------+
+/*
+	tipos de modificações que pode fazer 
+		1) ADICIONAR NOVA COLUNA
+			ALTER TABLE PRODUTOS ADD COLUMN FORNECEDOR VARCHAR(120);
+		2) MODIFICA O NOME DA COLUNA
+			ALTER TABLE PRODUTOS FORNECEDOR TO FORNECEDOR_NEW; 
+		3) MODIFICA O TIPO DA COLUNA (ESSA OPERAÇÃO NÃO FUNCIONA NO SQLITE)
+			ALTER TABLE PRODUTOS FORNECEDOR VARCHAR(50);
+*/
+-- DDL (Data Definition Language) - Modificação da estrutura de tabelas.
+
+-- Exemplo de como alterar a tabela: 
+-- DDL permite adicionar ou modificar colunas de uma tabela.
+
+-- ADICIONANDO NOVA COLUNA NA TABELA PRODUTO
+ALTER TABLE produtos ADD COLUMN FORNECEDOR VARCHAR(120);
+
+
+---------------------------------------------------------------------------------------------------
+--+--------------------------------------------------+
+--|             INSERINDO DADOS                      |
+--+--------------------------------------------------+
+-- DML (Data Manipulation Language) - Manipulação de dados nas tabelas.
+
+-- INSERINDO VALORES NA TABELA PRODUTO
+
+INSERT INTO produtos (NOMEPROD, DESCPROD, CODPROD, FORNECEDOR, VLRPROD, QTDPROD) VALUES
+('Cadeira Ergonômica', 'Cadeira de escritório confortável e ajustável', 'CADE1234', 'Loja do Escritório', 350.75, 15),
+('Smartphone X2000', 'Smartphone com tela de 6.5 polegadas e 128GB de armazenamento', 'SPHX2000', 'TechStore', 2299.90, 30),
+('Teclado Mecânico RGB', 'Teclado mecânico com iluminação RGB e switches Cherry MX', 'TECL4567', 'GamerTech', 499.99, 50),
+('Monitor 27&quot; Full HD', 'Monitor de 27 polegadas com resolução Full HD e painel IPS', 'MONI2750', 'TechVision', 1199.90, 20),
+('Fones de Ouvido Bluetooth', 'Fones de ouvido sem fio com cancelamento de ruído', 'FONE7789', 'SoundMaster', 299.99, 25),
+('Mouse Gamer X300', 'Mouse gamer com 8 botões programáveis e sensor de 16000 DPI', 'MOUSE300', 'GamerHub', 179.90, 40),
+('Geladeira Frost Free', 'Geladeira Frost Free de 450 litros, com tecnologia inverter', 'GEL450F', 'EletroStore', 2499.90, 10),
+('Câmera Digital 4K', 'Câmera digital 4K com lente de 50mm e estabilização de imagem', 'CAM4K202', 'FotoTech', 1599.00, 8),
+('Tênis Esportivo Running', 'Tênis esportivo confortável, ideal para corridas e atividades físicas', 'TENISRUN1', 'Nike', 199.99, 100),
+('Livro &quot;A Arte da Programação&quot;', 'Livro de referência sobre algoritmos e estrutura de dados', 'LIVROPROG', 'Livraria Online', 120.00, 60),
+('Cadeira Gaming Pro', 'Cadeira gamer com apoio de braço ajustável e encosto reclinável', 'CADEGAMER', 'GamerTech', 799.99, 22),
+('Smartwatch FitPro', 'Smartwatch com monitoramento de atividades físicas e notificações', 'SWATCHFIT', 'TechStore', 299.90, 35),
+('Mouse Sem Fio', 'Mouse sem fio com 1600 DPI e design ergonômico', 'MOUSEWIFI', 'Loja do Escritório', 89.99, 55),
+('Fone de Ouvido Wireless', 'Fone de ouvido wireless com alto-falantes de 40mm', 'FONEWIRE', 'SoundMaster', 179.90, 40),
+('Câmera de Segurança', 'Câmera de segurança HD com visão noturna e conexão Wi-Fi', 'CAMSECURE', 'EletroStore', 249.99, 60),
+('Lâmpada LED Inteligente', 'Lâmpada LED controlada via smartphone e assistentes virtuais', 'LAMPIQ', 'TechVision', 49.90, 80),
+('Geladeira Inox', 'Geladeira de 350 litros com prateleiras ajustáveis em inox', 'GELINX', 'EletroStore', 1999.00, 15),
+('Tablet Pro 10&quot;', 'Tablet com 10 polegadas e 64GB de armazenamento', 'TABLET10', 'TechStore', 799.90, 25),
+('Fone de Ouvido Over-Ear', 'Fones de ouvido com isolamento acústico e drivers de 50mm', 'FONEOVER', 'SoundMaster', 239.99, 50),
+('Cadeira de Escritório', 'Cadeira de escritório com design moderno e apoio lombar', 'CADEMOD', 'Loja do Escritório', 199.90, 30),
+('Monitor Curvo 32&quot;', 'Monitor curvo 32 polegadas com resolução 1440p e 144Hz', 'MONICURV', 'TechVision', 1799.99, 12),
+('Fritadeira Elétrica', 'Fritadeira elétrica sem óleo com capacidade de 3L', 'FRITELITE', 'EletroStore', 299.90, 18),
+('Carregador Rápido USB', 'Carregador rápido USB-C para dispositivos móveis', 'CARREGFAST', 'TechStore', 59.90, 70),
+('Luminária LED', 'Luminária LED com controle de intensidade e cores', 'LUMILED', 'Loja do Escritório', 129.90, 45),
+('Mouse RGB', 'Mouse com iluminação RGB e 6 botões programáveis', 'MOUSERGB', 'GamerHub', 109.99, 60),
+('Smartphone A10', 'Smartphone com tela de 5.8 polegadas e 64GB de armazenamento', 'SPHXA10', 'TechStore', 899.99, 50),
+('Câmera 360°', 'Câmera de segurança 360° com visão em todas as direções', 'CAM360', 'FotoTech', 349.99, 10),
+('Notebook Gamer', 'Notebook com processador i7, 16GB de RAM e placa de vídeo GTX 1660', 'NOTEBOOKGAMER', 'TechStore', 4599.90, 7),
+('Tênis Casual', 'Tênis confortável e estiloso para o dia a dia', 'TENISCASUAL', 'Nike', 129.99, 80),
+('Projetor Home Theater', 'Projetor Full HD com alto-falantes integrados para cinema em casa', 'PROJHOME', 'EletroStore', 1599.00, 12),
+('Ventilador de Torre', 'Ventilador de torre com 3 velocidades e oscilação automática', 'VENTTORRE', 'TechStore', 199.90, 40),
+('Aspirador de Pó Robô', 'Aspirador de pó automático com mapeamento de ambiente', 'ASPIRAROBO', 'EletroStore', 899.90, 8),
+('Cafeteira Elétrica', 'Cafeteira elétrica com capacidade de 1.2L e filtro permanente', 'CAFELITE', 'Loja do Escritório', 249.99, 15),
+('Roteador Wi-Fi 5', 'Roteador Wi-Fi 5 com alcance de 150 metros e 4 portas Ethernet', 'ROTER5G', 'TechStore', 139.90, 50),
+('Refrigerador Portátil', 'Refrigerador portátil para bebidas com capacidade de 25L', 'REFRIG25L', 'EletroStore', 499.90, 12),
+('Fone de Ouvido Esportivo', 'Fone de ouvido resistente à água para atividades esportivas', 'FONEESPORTE', 'SoundMaster', 169.90, 30),
+('Xbox One X', 'Console de videogame com 1TB de armazenamento e 4K', 'XBOX1X', 'TechStore', 2199.00, 6),
+('Computador All-in-One', 'Computador All-in-One com processador i5, 8GB de RAM e 1TB de HD', 'COMPALLINONE', 'Loja do Escritório', 2999.90, 10),
+('Sofá 3 Lugares', 'Sofá confortável de 3 lugares com revestimento de veludo', 'SOFA3L', 'MóveisOnline', 1999.99, 5),
+('Fritadeira Air Fryer', 'Fritadeira elétrica sem óleo, com 3.5L de capacidade', 'FRITA3L', 'EletroStore', 399.90, 50),
+('Câmera de Ação 4K', 'Câmera de ação 4K com estabilização de imagem e Wi-Fi', 'CAM4KACT', 'FotoTech', 549.90, 14),
+('Máquina de Lavar 10kg', 'Máquina de lavar roupas com capacidade de 10kg e 10 programas de lavagem', 'LAVAM10', 'EletroStore', 1399.00, 18),
+('Ar Condicionado 12000BTU', 'Ar condicionado portátil de 12000BTU com controle remoto', 'ARCON12000', 'TechStore', 1999.00, 6),
+('Batedeira Planetária', 'Batedeira elétrica com 5 velocidades e tigela de 5L', 'BATEPLAN', 'EletroStore', 499.99, 10),
+('Relógio Inteligente', 'Relógio inteligente com monitoramento de batimentos cardíacos', 'RELOGINT', 'TechStore', 229.99, 35),
+('Cervejeira Portátil', 'Cervejeira portátil com capacidade para 50 latas', 'CERVE50L', 'EletroStore', 799.90, 20),
+('Cadeira de Jardim', 'Cadeira de jardim com design confortável e resistente', 'CADEJARD', 'MóveisOnline', 149.99, 40),
+('Câmera Instantânea', 'Câmera instantânea para fotos em papel fotográfico', 'CAMINST', 'FotoTech', 249.99, 25),
+('TV 43&quot; LED', 'TV LED de 43 polegadas com resolução Full HD e entrada HDMI', 'TV43LED', 'TechVision', 1299.99, 22),
+('Escova Secadora', 'Escova secadora para alisar e modelar o cabelo', 'ESCOVASEC', 'EletroStore', 159.90, 60),
+('Mini Processador', 'Processador de alimentos mini com lâminas de aço inox', 'PROCESSMIN', 'Loja do Escritório', 99.99, 45),
+('Cafeteira Expresso', 'Cafeteira expresso com sistema de cápsulas e vaporizador', 'CAFEXPRESSO', 'EletroStore', 449.90, 15),
+('Pipoqueira Elétrica', 'Pipoqueira elétrica com capacidade para 2L', 'PIPOQUE2L', 'TechStore', 99.90, 55),
+('Placa de Vídeo RTX 3060', 'Placa de vídeo com 12GB de VRAM e suporte a Ray Tracing', 'RTX3060', 'TechStore', 2399.99, 10);
+
+INSERT INTO VENDEDORES (NOMEVEND) VALUES
+('JOÃO'),
+('MARIA'),
+('CARLOS'),
+('ANA'),
+('LUCAS'),
+('FERNANDA'),
+('RICARDO'),
+('PATRÍCIA'),
+('BRUNO'),
+('JULIANA');
+
+INSERT INTO VENDAS (IDPRODUTO, IDVENDEDOR, VALOR, QTDVENDIDA) VALUES
+(1, 3, 350.75, 5),
+(2, 7, 2299.90, 2),
+(3, 1, 499.99, 3),
+(4, 9, 1199.90, 1),
+(5, 2, 299.99, 10),
+(6, 5, 179.90, 8),
+(7, 4, 2499.90, 1),
+(8, 6, 1599.00, 4),
+(9, 8, 199.99, 6),
+(10, 10, 799.99, 2),
+(11, 3, 299.90, 3),
+(12, 7, 239.99, 5),
+(13, 1, 1499.90, 2),
+(14, 4, 499.99, 7),
+(15, 9, 799.90, 3),
+(16, 2, 179.90, 4),
+(17, 5, 249.99, 1),
+(18, 10, 799.90, 5),
+(19, 6, 399.90, 10),
+(20, 8, 249.99, 2),
+(21, 3, 2299.90, 2),
+(22, 7, 1599.00, 5),
+(23, 1, 899.99, 3),
+(24, 4, 179.90, 4),
+(25, 9, 1599.00, 6),
+(26, 2, 2299.90, 1),
+(27, 5, 179.90, 10),
+(28, 10, 299.99, 3),
+(29, 6, 249.99, 7),
+(30, 8, 1599.00, 2),
+(31, 3, 349.99, 5),
+(32, 7, 2299.90, 2),
+(33, 1, 799.99, 4),
+(34, 4, 399.90, 6),
+(35, 9, 179.90, 3),
+(36, 2, 499.99, 8),
+(37, 5, 2499.90, 1),
+(38, 10, 299.99, 6),
+(39, 6, 799.99, 4),
+(40, 8, 399.90, 7),
+(41, 3, 1599.00, 5),
+(42, 7, 899.99, 3),
+(43, 1, 1199.90, 2),
+(44, 4, 179.90, 8),
+(45, 9, 299.99, 5),
+(46, 2, 249.99, 6),
+(47, 5, 499.99, 4),
+(48, 10, 249.99, 3),
+(49, 6, 349.99, 7),
+(50, 8, 1599.00, 6),
+(51, 3, 799.90, 2),
+(52, 7, 2299.90, 1),
+(53, 1, 499.99, 5),
+(3, 2, 899.99, 4),
+(5, 6, 349.90, 6),
+(7, 8, 1799.90, 2),
+(9, 1, 499.99, 3),
+(11, 10, 219.90, 8),
+(13, 4, 1299.90, 1),
+(15, 7, 179.90, 7),
+(17, 9, 2299.90, 1),
+(19, 3, 799.90, 5),
+(21, 5, 249.99, 4),
+(23, 10, 1599.00, 3),
+(25, 2, 199.99, 10),
+(27, 6, 179.90, 9),
+(29, 8, 999.99, 6),
+(31, 1, 799.90, 4),
+(33, 4, 1399.99, 2),
+(35, 7, 249.99, 8),
+(37, 9, 1999.99, 3),
+(39, 3, 179.90, 5),
+(41, 5, 2499.90, 1),
+(43, 10, 299.99, 6),
+(45, 2, 1499.90, 3),
+(47, 6, 599.99, 5),
+(49, 8, 349.90, 4),
+(51, 1, 799.00, 7),
+(53, 4, 499.90, 8),
+(3, 7, 899.00, 4),
+(6, 9, 249.99, 9),
+(8, 2, 1799.00, 6),
+(10, 5, 2999.99, 1),
+(12, 10, 399.90, 5),
+(14, 6, 159.90, 7),
+(16, 8, 2199.90, 2),
+(18, 1, 1899.99, 3),
+(20, 4, 799.99, 4),
+(22, 7, 899.00, 5),
+(24, 9, 199.90, 7),
+(26, 2, 999.99, 2),
+(28, 5, 349.90, 8),
+(30, 10, 1599.90, 6),
+(32, 3, 1199.99, 5),
+(34, 1, 999.99, 3),
+(36, 4, 179.90, 10),
+(38, 7, 249.90, 6),
+(40, 9, 1599.00, 2),
+(42, 5, 2499.99, 1),
+(44, 10, 1299.90, 4),
+(46, 2, 399.90, 7),
+(48, 6, 799.00, 3),
+(50, 8, 1499.00, 5),
+(52, 3, 2199.90, 2),
+(54, 1, 899.00, 6);
+
+
+--#--------------------------------------------------+
+--#             TRABALHANDO COM SELECT               |
+--#--------------------------------------------------+
+-- DQL (Data Query Language) - Consultas para obter dados.
+
+SELECT VEN.VALOR
+     , VEN.QTDVENDIDA
+	 , P.NOMEPROD
+	 , V.NOMEVEND 
+ FROM VENDAS VEN
+	, VENDEDORES V
+	, produtos P
+WHERE VEN.IDPRODUTO = P.IDPRODUTO 
+  AND V.IDVENDEDOR = VEN.IDVENDEDOR
+
+
+</sql><sql name="SQL 2*">select fornecedor,
+    sum (qtdprod)
+	from produtos
+	group by fornecedor</sql><sql name="SQL 3*">select * from produtos
+</sql><current_tab id="1"/></tab_sql></sqlb_project>
